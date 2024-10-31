@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Faltas</title>
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="titulo">Já Pode Faltar?</h1>
+        <div class="content">
+            <div class="form-container">
+                <form method="post" action="{% url 'controle_faltas' %}">
+                    {% csrf_token %}
+                    <fieldset>
+                        <legend>Verifique sua situação de faltas</legend>
+                        <div class="campo">
+                            <label for="id_carga_horaria">{{ form.carga_horaria.label }}</label>
+                            {{ form.carga_horaria }}
+                            {% if form.carga_horaria.errors %}
+                                <div class="error-message">{{ form.carga_horaria.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="campo">
+                            <label for="id_total_faltas">{{ form.total_faltas.label }}</label>
+                            {{ form.total_faltas }}
+                            {% if form.total_faltas.errors %}
+                                <div class="error-message">{{ form.total_faltas.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </fieldset>
+                    <button type="submit" class="botao">Verificar</button>
+                </form>
+                {% if error_message %}
+                    <div class="error-message">{{ error_message }}</div>
+                {% endif %}
+                {% if console_message %}
+                    <div class="console-message">{{ console_message }}</div>
+                {% endif %}
+            </div>
+            <div class="resultado">
+                {% if resultado_imagem %}
+                    <img src="{% static resultado_imagem %}" alt="Resultado">
+                {% else %}
+                    <p>Eu posso faltar?</p>
+                    <img src="{% static 'assets/imagens/possofaltar.png' %}" alt="Emoji">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
